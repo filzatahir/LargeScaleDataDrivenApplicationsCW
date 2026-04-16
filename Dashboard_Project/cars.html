@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cars Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --pink: #F9DEEE;
+            --pink-hover: #F7C9E4;
+            --pink-strong: #EAA9CF;
+            --cream: #FFFDF9;
+            --card: #ffffff;
+            --muted: #e8e4e0;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
+            --text-dark: #4A3F46;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            background: var(--cream);
+            color: var(--text-dark);
+        }
+
+        .app {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: 100vh;
+        }
+
+        /* sidebar */
+        .sidebar {
+            background: var(--pink);
+            padding: 24px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-icon {
+            width: 28px;
+            height: 28px;
+        }
+
+        .nav-item {
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: var(--pink-hover);
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(0, 0, 0, 0.15);
+            margin: 8px 0 6px 0;
+        }
+
+        .sidebar-updated {
+            background: var(--pink-hover);
+            padding: 12px 14px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            font-size: 13px;
+        }
+
+        .sidebar-updated p {
+            margin: 0;
+            opacity: 0.7;
+        }
+
+        .sidebar-updated strong {
+            margin-top: 4px;
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            opacity: 0.7;
+        }
+
+        /* main */
+        .main {
+            padding: 28px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .topbar h1 {
+            margin: 0;
+            font-size: 28px;
+            color: var(--pink-strong);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(300px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 18px;
+        }
+
+        .card h3 {
+            margin: 0 0 12px 0;
+            color: var(--pink-strong);
+            font-weight: 700;
+        }
+
+        /* filter card */
+        .filter-card {
+            padding: 16px 18px;
+        }
+
+        .filters-row {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 12px;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--pink-strong);
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 8px 10px;
+            border: 1px solid var(--pink);
+            border-radius: 8px;
+            background: #fff;
+            outline: none;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--pink-strong);
+            background: #fff;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .btn.primary {
+            background: var(--pink-strong);
+            color: #fff;
+        }
+
+        /* error box */
+        .error-box {
+            display: none;
+            background: #ffe7f0;
+            border-left: 5px solid #e36aa5;
+            padding: 14px 16px;
+            border-radius: 8px;
+            color: #b3004b;
+            font-weight: 600;
+            margin: 12px 0 16px 0;
+            font-size: 14px;
+        }
+
+        .expand-row .details-cell {
+            background: #fff7fb;
+            padding: 14px 16px;
+            border-top: 1px solid var(--muted);
+            line-height: 1.6;
+        }
+
+        .details-btn {
+            padding: 6px 10px;
+            border: 1px solid var(--pink-strong);
+            background: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+        }
+
+        th {
+            background: var(--pink-strong);
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--muted);
+        }
+
+        tr:nth-child(even) {
+            background: #fdf7fb;
+        }
+
+        tr:hover {
+            background: #fbeaf4;
+        }
+
+        #pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app">
+        <!-- sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <img src="./car-symbol.png" class="brand-icon">
+                Car Dashboard
+            </div>
+
+            <a class="nav-item" href="/">Overview</a>
+            <a class="nav-item active" href="/cars-page">Cars</a>
+            <a class="nav-item" href="/accidents-page">Accidents</a>
+            <a class="nav-item" href="/services-page">Services</a>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-updated">
+                <p>Last Updated:</p>
+                <strong id="side-last-updated">--</strong>
+            </div>
+
+            <div class="sidebar-footer">
+                <small>Created by Filza ✨</small>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main">
+
+            <header class="topbar">
+                <h1>Cars</h1>
+                <p class="subtitle">Filter & Analyse Car Dataset</p>
+            </header>
+
+            <!-- FILTER CARD -->
+            <section class="card filter-card">
+
+                <!-- First row -->
+                <div class="filters-row">
+                    <div class="filter-group" style="grid-column: span 4;">
+                        <label>Search</label>
+                        <input id="searchInput" type="text" placeholder="Search cars...">
+                    </div>
+
+                    <div class="filter-group" style="grid-column: span 3;">
+                        <label>Manufacturer</label>
+                        <select id="manufacturerFilter">
+                            <option value="">All</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group" style="grid-column: span 3;">
+                        <label for="modelFilter">Model</label>
+                        <select id="modelFilter">
+                            <option value="">All</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group" style="grid-column: span 2;">
+                        <label>Min Price</label>
+                        <input id="minPrice" type="number" placeholder="0">
+                    </div>
+
+                    <div class="filter-group" style="grid-column: span 2;">
+                        <label>Max Price</label>
+                        <input id="maxPrice" type="number" placeholder="50000">
+                    </div>
+
+                    <div class="filter-group" style="grid-column: span 3;">
+                        <label>Sort by Price</label>
+                        <select id="sortOrder">
+                            <option value="">None</option>
+                            <option value="asc">Low → High</option>
+                            <option value="desc">High → Low</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-actions" style="grid-column: span 2;">
+                        <button class="btn primary" id="applyFiltersBtn">Apply</button>
+                        <button class="btn" id="resetFiltersBtn">Reset</button>
+                    </div>
+                </div>
+
+                <!-- Second row -->
+                <div class="filters-row" style="margin-top: 10px;">
+                    <div class="filter-group" style="grid-column: span 3;">
+                        <label>Accident</label>
+                        <select id="hasAccident">
+                            <option value="">Any</option>
+                            <option value="yes">Has Accident</option>
+                            <option value="no">No Accidents</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group" style="grid-column: span 3;">
+                        <label>Service</label>
+                        <select id="hasService">
+                            <option value="">Any</option>
+                            <option value="yes">Has Service</option>
+                            <option value="no">No Service</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group" style="grid-column: span 3;">
+                        <label>Feature</label>
+                        <select id="featureFilter">
+                            <option value="">Any</option>
+                            <option>Heated Seats</option>
+                            <option>Air Conditioning</option>
+                            <option>Sunroof</option>
+                            <option>Bluetooth</option>
+                            <option>Navigation</option>
+                            <option>Cruise Control</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group" style="grid-column: span 3;">
+                        <label>Accident Severity</label>
+                        <select id="severityFilter">
+                            <option value="">Any</option>
+                            <option>Minor</option>
+                            <option>Moderate</option>
+                            <option>Severe</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Third row -->
+                <div class="filters-row" style="margin-top: 10px;">
+                    <div class="filter-group" style="grid-column: span 4;">
+                        <label>Service Type</label>
+                        <input id="serviceTypeFilter" type="text" placeholder="e.g. Oil Change">
+                    </div>
+
+                    <div class="filter-group" style="grid-column: span 3;">
+                        <label>Fuel Type</label>
+                        <select id="fuelFilter">
+                            <option value="">Any</option>
+                            <option value="Petrol">Petrol</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="Hybrid">Hybrid</option>
+                            <option value="Electric">Electric</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group" style="grid-column: span 2;">
+                        <label>Min Year</label>
+                        <input id="minYear" type="number" placeholder="Min">
+                    </div>
+
+                    <div class="filter-group" style="grid-column: span 2;">
+                        <label>Max Year</label>
+                        <input id="maxYear" type="number" placeholder="Max">
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- CHARTS -->
+            <section class="grid">
+                <div class="card">
+                    <h3>Cars by Manufacturer</h3>
+                    <canvas id="chart1"></canvas>
+                </div>
+
+                <div class="card">
+                    <h3>Fuel Type Distribution</h3>
+                    <canvas id="chart2"></canvas>
+                </div>
+            </section>
+
+            <!-- TABLE -->
+            <section class="card">
+                <h3>Cars Table</h3>
+
+                <div id="cars-error" class="error-box"></div>
+
+                <div class="table-wrapper">
+                    <table id="carTable">
+                        <thead>
+                            <tr>
+                                <th data-sort="CarID">CarID</th>
+                                <th data-sort="Manufacturer">Manufacturer</th>
+                                <th data-sort="Model">Model</th>
+                                <th data-sort="Price">Price</th>
+                                <th data-sort="Mileage">Mileage</th>
+                                <th data-sort="Fuel_Type">Fuel Type</th>
+                                <th data-sort="Year_of_Manufacturing">Year</th>
+                                <th data-sort="Engine size">Engine size</th>
+                                <th>Has Accident</th>
+                                <th>Has Service</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="carTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="pagination"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        document.getElementById('applyFiltersBtn').addEventListener('click', loadCars);
+
+        document.getElementById('resetFiltersBtn').addEventListener('click', () => {
+
+            // all filter IDs
+            let ids = [
+                'searchInput', 'manufacturerFilter', 'sortOrder', 'minPrice', 'maxPrice',
+                'hasAccident', 'hasService', 'featureFilter', 'severityFilter',
+                'serviceTypeFilter', 'fuelFilter', 'minYear', 'maxYear'
+            ];
+
+            // clear every filter
+            ids.forEach(id => {
+                let el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+
+            // hide error message
+            const err = document.getElementById("cars-error");
+            if (err) err.style.display = "none";
+
+            // reload full dataset
+            loadCars();
+        });
+    </script>
+</body>
+
+</html>

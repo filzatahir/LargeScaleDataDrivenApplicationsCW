@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Services Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --pink: #F9DEEE;
+            --pink-hover: #F7C9E4;
+            --pink-strong: #EAA9CF;
+            --cream: #FFFDF9;
+            --card: #ffffff;
+            --muted: #e8e4e0;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
+            --text-dark: #4A3F46;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            background: var(--cream);
+            color: var(--text-dark);
+        }
+
+        .app {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: 100vh;
+        }
+
+        /* sidebar */
+        .sidebar {
+            background: var(--pink);
+            padding: 24px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-icon {
+            width: 28px;
+        }
+
+        .nav-item {
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: var(--pink-hover);
+        }
+
+        /* divider under nav */
+        .sidebar-divider {
+            height: 1px;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.15);
+            margin: 6px 0 4px 0;
+        }
+
+        /* last updated box */
+        .sidebar-updated {
+            margin-top: 10px;
+            background: var(--pink-hover);
+            padding: 12px 14px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            font-size: 13px;
+        }
+
+        .sidebar-updated p {
+            margin: 0;
+            opacity: 0.7;
+        }
+
+        .sidebar-updated strong {
+            display: block;
+            margin-top: 4px;
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            opacity: 0.7;
+        }
+
+        /* main */
+        .main {
+            padding: 28px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .topbar h1 {
+            margin: 0;
+            font-size: 28px;
+            color: var(--pink-strong);
+        }
+
+        .subtitle {
+            margin-top: -6px;
+            color: var(--text-dark);
+            opacity: 0.6;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        .card h3 {
+            margin: 0 0 12px 0;
+            color: var(--pink-strong);
+        }
+
+        .kpis {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .kpi-card {
+            background: var(--card);
+            padding: 24px;
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+        }
+
+        .kpi-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--pink-strong);
+            margin-bottom: 8px;
+        }
+
+        .kpi-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(300px, 1fr));
+            gap: 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+        }
+
+        th {
+            background: var(--pink-strong);
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--muted);
+        }
+
+        tr:nth-child(even) {
+            background: #fdf7fb;
+        }
+
+        tr:hover {
+            background: #fbeaf4;
+        }
+
+        #pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <img src="./car-symbol.png" class="brand-icon">
+                Car Dashboard
+            </div>
+
+            <a class="nav-item" href="/">Overview</a>
+            <a class="nav-item" href="/cars-page">Cars</a>
+            <a class="nav-item" href="/accidents-page">Accidents</a>
+            <a class="nav-item active" href="/services-page">Services</a>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-updated">
+                <p>Last Updated:</p>
+                <strong id="side-last-updated">--</strong>
+            </div>
+
+            <div class="sidebar-footer">
+                <small>Created by Filza ✨</small>
+            </div>
+        </aside>
+
+        <!-- MAIN AREA -->
+        <main class="main">
+
+            <header class="topbar">
+                <h1>Services</h1>
+                <p class="subtitle">Maintenance & Service Records</p>
+            </header>
+
+            <section class="kpis" id="kpis"></section>
+
+            <section class="grid">
+                <div class="card">
+                    <h3>Service Type Distribution</h3>
+                    <canvas id="chart1"></canvas>
+                </div>
+
+                <div class="card">
+                    <h3>Total Service Cost by Year</h3>
+                    <canvas id="chart2"></canvas>
+                </div>
+            </section>
+
+            <section class="card">
+                <h3>Services Table</h3>
+
+                <!-- FILTERS ROW -->
+                <div style="display:flex; align-items:center; gap:20px; margin:12px 0 20px 0;">
+
+                    <!-- Manufacturer -->
+                    <div style="display:flex; flex-direction:column;">
+                        <label style="font-weight:600; color:#EAA9CF;">Manufacturer:</label>
+                        <select id="svcManuFilter"
+                            style="padding:6px 10px; border-radius:8px; border:1px solid #EAA9CF;">
+                            <option value="">Any</option>
+                        </select>
+                    </div>
+
+                    <!-- Model -->
+                    <div style="display:flex; flex-direction:column;">
+                        <label style="font-weight:600; color:#EAA9CF;">Model:</label>
+                        <select id="svcModelFilter"
+                            style="padding:6px 10px; border-radius:8px; border:1px solid #EAA9CF;">
+                            <option value="">Any</option>
+                        </select>
+                    </div>
+
+                    <!-- Service Type -->
+                    <div style="display:flex; flex-direction:column;">
+                        <label style="font-weight:600; color:#EAA9CF;">Service Type:</label>
+                        <select id="svcTypeFilter"
+                            style="padding:6px 10px; border-radius:8px; border:1px solid #EAA9CF;">
+                            <option value="">Any</option>
+                        </select>
+                    </div>
+
+                    <!-- Min Cost -->
+                    <div style="display:flex; flex-direction:column;">
+                        <label style="font-weight:600; color:#EAA9CF;">Min Cost (£):</label>
+                        <input id="svcMinCost" type="number" placeholder="0"
+                            style="padding:6px; border-radius:8px; border:1px solid #EAA9CF; width:100px;">
+                    </div>
+
+                    <!-- Max Cost -->
+                    <div style="display:flex; flex-direction:column;">
+                        <label style="font-weight:600; color:#EAA9CF;">Max Cost (£):</label>
+                        <input id="svcMaxCost" type="number" placeholder="1000"
+                            style="padding:6px; border-radius:8px; border:1px solid #EAA9CF; width:100px;">
+                    </div>
+
+                    <!-- Multiple Services -->
+                    <div style="display:flex; flex-direction:column;">
+                        <label style="font-weight:600; color:#EAA9CF;">Multiple Services?</label>
+                        <select id="svcMultiFilter"
+                            style="padding:6px 10px; border-radius:8px; border:1px solid #EAA9CF;">
+                            <option value="">Any</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="table-wrapper">
+                    <table id="servicesTable">
+                        <thead>
+                            <tr>
+                                <th data-sort="ServiceID">Service ID</th>
+                                <th data-sort="CarID">Car ID</th>
+                                <th>Manufacturer</th>
+                                <th>Model</th>
+                                <th data-sort="Date_of_Service">Date</th>
+                                <th data-sort="Cost_of_Service">Cost</th>
+                                <th>Service Type</th>
+                            </tr>
+                        </thead>
+                        <tbody id="servicesTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="pagination"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="services.js"></script>
+
+</body>
+
+</html>

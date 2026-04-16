@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Accidents Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --pink: #F9DEEE;
+            --pink-hover: #F7C9E4;
+            --pink-strong: #EAA9CF;
+            --cream: #FFFDF9;
+            --card: #ffffff;
+            --muted: #e8e4e0;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
+            --text-dark: #4A3F46;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            background: var(--cream);
+            color: var(--text-dark);
+        }
+
+        .app {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: 100vh;
+        }
+
+        /* sidebar */
+        .sidebar {
+            background: var(--pink);
+            padding: 24px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-icon {
+            width: 28px;
+            height: 28px;
+        }
+
+        .nav-item {
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: var(--pink-hover);
+        }
+
+        .sidebar-updated {
+            background: var(--pink-hover);
+            padding: 12px 14px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            font-size: 13px;
+        }
+
+        .sidebar-updated p {
+            margin: 0;
+            opacity: 0.7;
+        }
+
+        .sidebar-updated strong {
+            margin-top: 4px;
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            opacity: 0.7;
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(0, 0, 0, 0.15);
+            margin: 8px 0 6px 0;
+        }
+
+        /* main */
+        .main {
+            padding: 28px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .topbar h1 {
+            margin: 0;
+            font-size: 28px;
+            color: var(--pink-strong);
+        }
+
+        .subtitle {
+            margin-top: -6px;
+            font-size: 14px;
+            color: var(--text-dark);
+            opacity: 0.7;
+        }
+
+        .kpis {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(180px, 1fr));
+            gap: 18px;
+        }
+
+        .kpi-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        .kpi-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--pink-strong);
+            margin-bottom: 6px;
+        }
+
+        .kpi-value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(300px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 18px;
+        }
+
+        .card h3 {
+            margin: 0 0 12px 0;
+            color: var(--pink-strong);
+            font-weight: 700;
+        }
+
+        .table-wrapper {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+            table-layout: fixed;
+        }
+
+        th {
+            background: var(--pink-strong);
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--muted);
+            word-wrap: break-word;
+        }
+
+        tr:nth-child(even) {
+            background: #fdf7fb;
+        }
+
+        tr:hover {
+            background: #fbeaf4;
+        }
+
+        #pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+
+        <!-- sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <img src="./car-symbol.png" class="brand-icon">
+                Car Dashboard
+            </div>
+
+            <a class="nav-item" href="/">Overview</a>
+            <a class="nav-item" href="/cars-page">Cars</a>
+            <a class="nav-item active" href="/accidents-page">Accidents</a>
+            <a class="nav-item" href="/services-page">Services</a>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-updated">
+                <p>Last Updated:</p>
+                <strong id="side-last-updated">--</strong>
+            </div>
+
+            <div class="sidebar-footer">
+                <small>Created by Filza ✨</small>
+            </div>
+        </aside>
+
+        <!-- main -->
+        <main class="main">
+
+            <header class="topbar">
+                <h1>Accidents</h1>
+                <p class="subtitle">KPIs, charts, and detailed accident records</p>
+            </header>
+
+            <!-- KPIs -->
+            <section class="kpis" id="kpis"></section>
+
+            <!-- 2 charts -->
+            <section class="grid">
+                <div class="card">
+                    <h3>Accidents by Severity</h3>
+                    <canvas id="accChartSeverity"></canvas>
+                </div>
+                <div class="card">
+                    <h3>Total Repair Cost by Year</h3>
+                    <canvas id="accChartCostByYear"></canvas>
+                </div>
+            </section>
+
+            <!-- table -->
+            <section class="card">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                    <h3>Accidents Table</h3>
+                    <div style="display:flex; justify-content:flex-end; margin-bottom:12px;">
+                        <label for="accSort" style="margin-right:8px; font-weight:600; color:var(--pink-strong);">
+                            Sort by Severity:
+                        </label>
+                        <select id="accSort" style="padding:6px 10px; border-radius:8px; border:1px solid var(--pink);">
+                            <option value="">None</option>
+                            <option value="low-high">Low → High</option>
+                            <option value="high-low">High → Low</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display:flex; align-items:center; gap:20px; margin:12px 0 16px 0;">
+
+                    <!-- Manufacturer -->
+                    <div style="display:flex; flex-direction:column;">
+                        <label style="font-weight:600; color:#EAA9CF;">Manufacturer:</label>
+                        <select id="accManuFilter"
+                            style="padding:6px 10px; border-radius:8px; border:1px solid #EAA9CF;">
+                            <option value="">Any</option>
+                        </select>
+                    </div>
+
+                    <!-- Model -->
+                    <div style="display:flex; flex-direction:column;">
+                        <label style="font-weight:600; color:#EAA9CF;">Model:</label>
+                        <select id="accModelFilter"
+                            style="padding:6px 10px; border-radius:8px; border:1px solid #EAA9CF;">
+                            <option value="">Any</option>
+                        </select>
+                    </div>
+
+                    <!-- cost Range -->
+                    <div style="display:flex; flex-direction:column;">
+                        <label style="font-weight:600; color:#EAA9CF;">Min Cost (£):</label>
+                        <input id="minRepairCost" type="number" placeholder="0"
+                            style="padding:6px; border-radius:8px; border:1px solid #EAA9CF; width:100px;">
+                    </div>
+
+                    <div style="display:flex; flex-direction:column;">
+                        <label style="font-weight:600; color:#EAA9CF;">Max Cost (£):</label>
+                        <input id="maxRepairCost" type="number" placeholder="10000"
+                            style="padding:6px; border-radius:8px; border:1px solid #EAA9CF; width:100px;">
+                    </div>
+
+                    <!-- multiple accidents -->
+                    <div style="display:flex; flex-direction:column;">
+                        <label style="font-weight:600; color:#EAA9CF;">Multiple Accidents?</label>
+                        <select id="multiAccFilter"
+                            style="padding:6px 10px; border-radius:8px; border:1px solid #EAA9CF;">
+                            <option value="">Any</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+                    <table id="accTable">
+
+
+
+
+                        <div class="table-wrapper">
+                            <table id="accTable">
+                                <thead>
+                                    <tr>
+                                        <th data-sort="AccidentID">Accident ID</th>
+                                        <th data-sort="CarID">Car ID</th>
+                                        <th data-sort="Manufacturer">Manufacturer</th>
+                                        <th data-sort="Model">Model</th>
+                                        <th data-sort="Date_of_Accident">Date</th>
+                                        <th data-sort="Severity">Severity</th>
+                                        <th data-sort="Cost_of_Repair">Cost</th>
+                                        <th data-sort="Description">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="accTableBody"></tbody>
+                            </table>
+                        </div>
+                        
+                        <div id="pagination"></div>
+
+                        <div id="pagination"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="accidents.js"></script>
+</body>
+
+</html>
