@@ -10,8 +10,8 @@ A compact, well‑structured repository showcasing data preprocessing, modelling
 ├── Data/
 │   └── ERD.png               # Entity Relationship Diagram
 ├── Preprocessing.ipynb       # Data cleaning & preprocessing workflow
-├── README.md                 # Documentation
-└── ~$r Dataset Analysis.docx # (Autosave file)
+└── README.md                 # Documentation
+
 ```
 
 ---
