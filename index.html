@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Car Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --pink: #F9DEEE;
+            --pink-hover: #F7C9E4;
+            --pink-strong: #EAA9CF;
+            --cream: #FFFDF9;
+            --card: #ffffff;
+            --muted: #e8e4e0;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
+            --text-dark: #4A3F46;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            background: var(--cream);
+            color: var(--text-dark);
+        }
+
+        /* GRID */
+        .app {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            background: var(--pink);
+            padding: 24px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-icon {
+            width: 28px;
+            height: 28px;
+        }
+
+        .nav-item {
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: background .2s;
+        }
+
+        .nav-item.active,
+        .nav-item:hover {
+            background: var(--pink-hover);
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(0, 0, 0, 0.15);
+            margin: 8px 0 6px 0;
+        }
+
+        /* QUICK STATS */
+        .sidebar-stats {
+            background: var(--pink-hover);
+            padding: 14px 16px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .sidebar-updated {
+            margin-top: 10px;
+            background: var(--pink-hover);
+            padding: 12px 14px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            font-size: 13px;
+        }
+
+        /* MAIN */
+        .main {
+            padding: 28px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .topbar h1 {
+            margin: 0;
+            font-size: 28px;
+            color: var(--pink-strong);
+        }
+
+        .subtitle {
+            margin-top: -6px;
+            font-size: 14px;
+            opacity: 0.6;
+        }
+
+        /* KPI */
+        .kpis {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-top: 10px;
+        }
+
+        .kpi-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .kpi-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--pink-strong);
+            margin-bottom: 6px;
+        }
+
+        .kpi-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* CHARTS */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(300px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 18px;
+        }
+
+        /* force pink chart headings */
+        .card h3 {
+            color: var(--pink-strong) !important;
+        }
+
+        /* TABLE */
+        .table-wrapper {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+        }
+
+        th {
+            background: var(--pink-strong);
+            color: white;
+            padding: 14px;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid var(--muted);
+        }
+
+        tr:nth-child(even) {
+            background: #fdf0f7;
+        }
+
+        tr:nth-child(odd) {
+            background: white;
+        }
+
+        tr:hover {
+            background: #fbeaf4 !important;
+        }
+
+        /* FILTER BAR */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--pink-strong);
+            font-size: 14px;
+        }
+
+        .filter-input {
+            padding: 6px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--pink-strong);
+            background: #fff;
+            font-size: 14px;
+            min-width: 90px;
+            outline: none;
+        }
+
+        .filter-input:focus {
+            box-shadow: 0 0 0 3px rgba(234, 169, 207, 0.25);
+        }
+
+        /* PAGINATION */
+        #pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 0;
+        }
+
+        #pagination button {
+            padding: 6px 14px;
+            border-radius: 8px;
+            background: #fff;
+            border: 1px solid var(--pink);
+            color: var(--pink);
+            cursor: pointer;
+        }
+
+        #pagination span {
+            font-weight: 700;
+            color: var(--pink-strong);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="brand">
+                <img src="./car-symbol.png" class="brand-icon">
+                Car Dashboard
+            </div>
+
+            <a class="nav-item active" href="/">Overview</a>
+            <a class="nav-item" href="/cars-page">Cars</a>
+            <a class="nav-item" href="/accidents-page">Accidents</a>
+            <a class="nav-item" href="/services-page">Services</a>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-stats">
+                <h4>Quick Stats</h4>
+                <p>Total Cars: <strong id="side-total-cars">...</strong></p>
+                <p>Avg Price: <strong id="side-avg-price">...</strong></p>
+                <p>Top Brand: <strong id="side-top-brand">...</strong></p>
+            </div>
+
+            <div class="sidebar-updated">
+                <p>Last Updated:</p>
+                <strong id="side-last-updated">--</strong>
+            </div>
+
+            <div class="sidebar-footer">
+                <small>Created by Filza ✨</small>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main">
+
+            <header class="topbar">
+                <h1>Overview</h1>
+                <p class="subtitle">Dashboard Summary of Car Sales</p>
+            </header>
+
+            <section class="kpis" id="kpis"></section>
+
+            <section class="grid">
+                <div class="card">
+                    <h3>Cars by Manufacturer</h3>
+                    <canvas id="chart1"></canvas>
+                </div>
+
+                <div class="card">
+                    <h3>Fuel Type Distribution</h3>
+                    <canvas id="chart2"></canvas>
+                </div>
+            </section>
+
+            <!-- TABLE -->
+            <section class="card">
+
+                <div class="filter-bar">
+                    <label class="filter-label">Manufacturer:</label>
+                    <select id="manufacturerFilter" class="filter-input">
+                        <option value="">All</option>
+                    </select>
+
+                    <label class="filter-label">Sort by Price:</label>
+                    <select id="sortOrder" class="filter-input">
+                        <option value="">None</option>
+                        <option value="asc">Low → High</option>
+                        <option value="desc">High → Low</option>
+                    </select>
+
+                    <label class="filter-label">Min Price:</label>
+                    <input id="minPrice" type="number" class="filter-input" placeholder="0">
+
+                    <label class="filter-label">Max Price:</label>
+                    <input id="maxPrice" type="number" class="filter-input" placeholder="50000">
+                </div>
+
+                <div class="table-wrapper">
+                    <table id="carTable">
+                        <thead>
+                            <tr>
+                                <th data-sort="CarID">CarID</th>
+                                <th data-sort="Manufacturer">Manufacturer</th>
+                                <th data-sort="Model">Model</th>
+                                <th data-sort="Price">Price</th>
+                                <th data-sort="Mileage">Mileage</th>
+                                <th data-sort="Fuel_Type">Fuel Type</th>
+                                <th data-sort="Year_of_Manufacturing">Year</th>
+                                <th data-sort="Engine size">Engine size</th>
+                            </tr>
+                        </thead>
+                        <tbody id="carTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="pagination"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <!-- Last updated -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const last = document.getElementById("side-last-updated");
+            if (last) {
+                const now = new Date();
+                const formatted = now.toLocaleString("en-UK", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }).replace(",", " at");
+                last.innerText = formatted;
+            }
+        });
+    </script>
+
+    <!-- Your page logic -->
+    <script src="overview.js"></script>
+
+</body>
+
+</html>
